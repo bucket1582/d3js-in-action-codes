@@ -1,5 +1,5 @@
 import { select } from "d3-selection";
-import { houses, houses } from "./helper";
+import { houses } from "./helper";
 import { getRadius } from "./scales";
 
 export const createLegend = () => {
