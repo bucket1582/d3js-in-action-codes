@@ -1,6 +1,9 @@
 import { createLegend } from "./legend";
 import { loadData } from "./load-data";
 import { drawMatrix } from "./matrix";
+import { drawArcDiagram } from "./arc";
+import { drawBeeswarm } from "./beeswarm";
+import { drawNetwork } from "./network";
 
 createLegend();
 
