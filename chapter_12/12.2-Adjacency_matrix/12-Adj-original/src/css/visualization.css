@@ -1,0 +1,43 @@
+/* Interactive legends */
+.matrix-sidebar,
+.network-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-left: 15px;
+  opacity: 1;
+  transition: opacity 250ms ease;
+}
+.matrix-tooltip.hidden,
+.network-sidebar.hidden {
+  opacity: 0;
+}
+.matrix-legend ul {
+  margin: 0;
+  padding-left: 2px;
+  list-style: none;
+  display: flex;
+}
+.matrix-legend li {
+  margin-right: 10px;
+  text-align: center;
+}
+.matrix-legend .legend-color {
+  width: 18px;
+  height: 18px;
+}
+.matrix-legend .legend-color-label {
+  margin-top: 3px;
+  font-size: 1.6rem;
+}
+.matrix-tooltip {
+  margin-top: 20px;
+  font-size: 2rem;
+}
+.matrix-tooltip-charA,
+.matrix-tooltip-charB,
+.matrix-tooltip-scenes,
+.network-character {
+  font-weight: 700;
+}
