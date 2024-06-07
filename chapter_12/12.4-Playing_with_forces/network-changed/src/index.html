@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Romeo and Juliet | D3.js in Action</title>
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/visualization.css">
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col col-3">
+				<div class="legend-container">
+					<div class="legend">
+						<h2>Characters Legend</h2>
+						<div class="legend-section">
+							<h3>Houses</h3>
+							<div class="legend-houses"></div>
+						</div>
+						<div class="legend-section">
+							<h3>Number of lines in the play</h3>
+							<div class="legend-radius"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col col-9">
+				<section>
+					<div class="row">
+						<div class="col col-9">
+							<div id="network"></div>
+						</div>
+						<div class="col col-3">
+							<div class="network-sidebar hidden">
+								<div class="network-character"></div>
+								<div class="network-description"></div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+
+	<script type="module" src="./js/main.js"></script>
+</body>
+</html>

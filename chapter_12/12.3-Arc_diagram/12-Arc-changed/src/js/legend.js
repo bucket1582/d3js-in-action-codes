@@ -21,7 +21,22 @@ export const createLegend = () => {
     .append("span")
       .attr("class", "legend-house-label")
       .text(d => d.house);
+  
+      
+  const highlightDetail = select(".legend-houses")
+    .selectChild("ul")
+    .join("li")
+      .attr("class", "legend-highlight");
+  
+  highlightDetail
+    .append("span")
+      .attr("class", "legend-house-color")
+      .style("background-color", "#ff4a4a");
 
+  highlightDetail
+    .append("span")
+      .attr("class", "highlight-label")
+      .text("Most talkative person in each house");
     
   // Circle radius
   const linesMax = 600;
