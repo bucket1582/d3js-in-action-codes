@@ -1,7 +1,6 @@
 import { select, selectAll } from "d3-selection";
 import { max } from "d3-array";
 import { forceSimulation, forceCollide, forceCenter, forceManyBody, forceLink } from "d3-force";
-import { transition } from "d3-transition";
 import { colorScale, getRadius } from "./scales";
 
 export const drawNetwork = (nodes, edges) => {
@@ -88,51 +87,4 @@ export const drawNetwork = (nodes, edges) => {
   simulation
     .force("link")
     .links(edges);
-
-
-  // Add interaction
-  selectAll(".network-node")
-    .on("mouseenter", (e, d) => {
-      
-      const t = transition()
-        .duration(150);
-
-      const isLinked = char => {
-        return edges.find(edge => 
-          (edge.source.id === d.id && edge.target.id === char.id) || 
-          (edge.source.id === char.id && edge.target.id === d.id))
-            ? true
-            : false;
-      };
-
-      selectAll(".network-link")
-        .transition(t)
-        .attr("stroke-opacity", link => link.source.id === d.id || link.target.id === d.id ? 0.1 : 0);
-    
-      selectAll(".network-node")
-        .transition(t)
-        .attr("fill-opacity", char => char.id === d.id || isLinked(char) ? 1 : 0 );
-
-      select(".network-character")
-        .text(d.name);
-      select(".network-description")
-        .text(d.description);
-      select(".network-sidebar")
-        .classed("hidden", false);
-
-    })
-    .on("mouseleave", () => {
-
-      selectAll(".network-link")
-        .attr("stroke-opacity", 0.1);
-
-      selectAll(".network-node")
-        .attr("fill-opacity", 1);
-
-      select(".network-sidebar")
-        .classed("hidden", true);
-
-    });
-
-
 };
