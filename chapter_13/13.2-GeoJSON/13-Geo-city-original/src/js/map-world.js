@@ -33,46 +33,6 @@ export const drawWorldMap = (laureates, world) => {
     }
   });
 
-  cities.forEach(
-    city => {
-      const fields = ["Physics", "Economics", "Medicine", "Literature", "Peace"];
-      const numberByFields = {};
-      
-      fields.forEach(
-        field => {
-          const count = city.laureates.filter(
-            laureate => laureate.category == field
-          ).length;
-          numberByFields[field] = count;
-        }
-      )
-      
-      city["Number of laureeates in field"] = numberByFields;
-    }
-  )
-
-  const fields = ["Physics", "Economics", "Medicine", "Literature", "Peace"];
-  const bestCityByField = {};
-  fields.forEach(
-    field => {
-      const bestCity = cities.reduce(
-        (prev, curr) => (prev && prev["Number of laureeates in field"][field] > curr["Number of laureeates in field"][field]) ? prev : curr
-      );
-      bestCityByField[field] = bestCity;
-    }
-  )
-
-  const getColor = (city) => fields.filter(
-    field => bestCityByField[field].city == city.city
-  ).length > 0 ? "#f2e713" : "#35a7c2";
-
-  const getOpacity = (city) => {
-    if (city.laureates.length < 2) return 0.1;
-    if (city.laureates.length < 5) return 0.2;
-    if (city.laureates.length < 10) return 0.3;
-    return 0.5;
-  }
-
   // Dimensions
   const width = 1230;
   const height = 620;
@@ -138,10 +98,9 @@ export const drawWorldMap = (laureates, world) => {
         .attr("class", "circle-city")
         .attr("cx", d => projection([d.longitude, d.latitude])[0])
         .attr("cy", d => projection([d.longitude, d.latitude])[1])
-        .attr("fill", d => getColor(d))
-        .attr("fill-opacity", d => getOpacity(d))
-        .attr("stroke", d => getColor(d))
-        .attr("stroke-opacity", d => getOpacity(d));
+        .attr("fill", "#35a7c2")
+        .attr("fill-opacity", 0.5)
+        .attr("stroke", "#35a7c2");
 
     updateCityCircles();
 
