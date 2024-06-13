@@ -9,7 +9,7 @@ export const createLegend = () => {
 
 
 
-  const addTalkClass = (min_percentage, max_percentage, colorString) =>
+  const addTalkClass = (classString, colorString) =>
     {
       let talkClass = select(".legend-talkClasses")
         .selectChild("ul");
@@ -23,13 +23,13 @@ export const createLegend = () => {
       
       talkClass.append("span")
         .attr("class", "legend-class-label")
-        .text(min_percentage.concat(" < X ≤ ", max_percentage))
+        .text(classString)
     }
 
-  addTalkClass("75%", "100%", "#6068ae");
-  addTalkClass("50%", "75%", "#888ec2");
-  addTalkClass("25%", "50%", "#afb3d7");
-  addTalkClass("0%", "25%", "#d7d9eb");
+  addTalkClass("Most talkative", "#6068ae");
+  addTalkClass("Talks relatively a lot", "#888ec2");
+  addTalkClass("Talks relatively a little", "#afb3d7");
+  addTalkClass("Most quiet", "#d7d9eb");
   
 
 
