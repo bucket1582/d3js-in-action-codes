@@ -18,15 +18,21 @@ export const drawNetwork = (nodes, edges) => {
       .attr("transform", `translate(${width/2}, ${height/2})`);
 
 
+  const getColor = (edge) => {
+    if (edge.source == "romeo" || edge.target == "romeo") return "#1b35e0";
+    if (edge.source == "juliet" || edge.target == "juliet") return "#5ec722";
+    return "#364652";
+  }
+
   // Append links
   svg
     .selectAll(".network-link")
     .data(edges)
     .join("line")
       .attr("class", "network-link")
-      .attr("stroke", "#364652")
-      .attr("stroke-opacity", 0.1)
-      .attr("stroke-width", d => d.weight);
+      .attr("stroke", getColor)
+      .attr("stroke-opacity", d => d.weight * 0.15)
+      .attr("stroke-width", 3);
 
 
   // Append nodes
@@ -41,7 +47,9 @@ export const drawNetwork = (nodes, edges) => {
         return d.radius;
       })
       .attr("fill", d => colorScale(d.house))
+      .attr("fill-opacity", d => d.totalLinesNumber / maxLines)
       .attr("stroke", "#FAFBFF")
+      .attr("stroke-opacity", d => d.totalLinesNumber / maxLines)
       .attr("stroke-width", 1);
 
   
