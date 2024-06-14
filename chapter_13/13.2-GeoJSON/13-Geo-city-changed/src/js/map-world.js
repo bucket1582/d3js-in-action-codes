@@ -1,8 +1,7 @@
 import { select, selectAll } from "d3-selection";
 import { geoPath, geoEqualEarth, geoGraticule } from "d3-geo";
-import { transition } from "d3-transition";
 import { max } from "d3-array";
-import { countryColorScale, getCityRadius } from "./scales";
+import { getCityRadius } from "./scales";
 import { drawLegend } from "./legend";
 
 export const drawWorldMap = (laureates, world) => {
@@ -34,12 +33,17 @@ export const drawWorldMap = (laureates, world) => {
     }
   });
 
+  const getCityOpacity = (city) => {
+    const numberOfLaureates = city.laureates.length;
+    if (numberOfLaureates < 2) return 0.15;
+    if (numberOfLaureates < 5) return 0.3;
+    if (numberOfLaureates < 10) return 0.45;
+    return 0.6;
+  }
+
   // Dimensions
   const width = 1230;
   const height = 620;
-
-  // Declare state variables
-  let isCountryMap = true;
 
   // Append the SVG container
   const svg = select("#map")
@@ -73,20 +77,6 @@ export const drawWorldMap = (laureates, world) => {
     .datum(graticuleGenerator.outline)
       .attr("d", geoPathGenerator);
 
-  // Handle the tooltip
-  const showTooltip = (text) => {
-    select("#map-tooltip")
-      .text(text)
-      .transition()
-      .style("opacity", 1);
-  };
-
-  const hideTooltip = () => {
-    select("#map-tooltip")
-      .transition()
-      .style("opacity", 0);
-  };
-
   // Append the country paths
   svg
     .selectAll(".country-path")
@@ -97,68 +87,15 @@ export const drawWorldMap = (laureates, world) => {
       .attr("stroke", "#09131b")
       .attr("stroke-opacity", 0.4);
 
-  const updateCountryFills = () => {
-    selectAll(".country-path")
-      .on("mouseenter", (e, d) => {
-        const p = d.properties;
-        const lastWord = p.laureates.length > 1 ? "laureates" : "laureate";
-        const text = `${p.name}, ${p.laureates.length} ${lastWord}`;
-        showTooltip(text);
-      })
-      .on("mouseleave", hideTooltip)
-      .transition()
-      .attr("fill", d => d.properties.laureates.length > 0 
-        ? countryColorScale(d.properties.laureates.length) 
-        : "#f8fcff");
-  };
-
   const maxLaureatesPerCity = max(cities, d => d.laureates.length);
   const updateCityCircles = () => {
-    // const selectedData = JSON.parse(JSON.stringify(cities));
-    // selectedData.forEach(city => {
-    //   city.laureates = city.laureates.filter(l => l.year >= brushMin && l.year <= brushMax);
-    // });
-
     selectAll(".circle-city")
-      // .data(selectedData)
-      .on("mouseenter", (e, d) => {
-        const lastWord = d.laureates.length > 1 ? "laureates" : "laureate";
-        const text = `${d.city}, ${d.laureates.length} ${lastWord}`;
-        showTooltip(text);
-      })
-      .on("mouseleave", hideTooltip)
-      .transition()
       .attr("r", d => getCityRadius(d.laureates.length, maxLaureatesPerCity));
-  };
-
-  const displayCountries = () => {
-    isCountryMap = true;
-
-    // Remove city circles
-    selectAll(".circle-city")
-      .transition()
-      .attr("fill-opacity", 0)
-      .attr("stroke-opacity", 0)
-      .remove();
-
-    updateCountryFills();
-
-    // Show related legend
-    select(".legend-cities")
-      .style("display", "none");
-    select(".legend-countries")
-      .style("display", "flex");
   };
   
   const displayCities = () => {
-
-    isCountryMap = false;
-
     // Remove country styles and events
     selectAll(".country-path")
-      .on("mouseenter", null)
-      .on("leave", null)
-      .transition()
       .attr("fill", "#f8fcff");
 
     // Show birth cities
@@ -169,33 +106,22 @@ export const drawWorldMap = (laureates, world) => {
         .attr("class", "circle-city")
         .attr("cx", d => projection([d.longitude, d.latitude])[0])
         .attr("cy", d => projection([d.longitude, d.latitude])[1])
-        .attr("fill", "#35a7c2")
-        .attr("fill-opacity", 0.5)
-        .attr("stroke", "#35a7c2");
+        .attr("fill", d => (d.city == "New York City") ? "#ed5858" : "#35a7c2")
+        .attr("fill-opacity", getCityOpacity)
+        .attr("stroke", d => (d.city == "New York City") ? "#e82c2c" : "#35a7c2")
+        .attr("stroke-opacity", getCityOpacity);
 
     updateCityCircles();
 
     // Show related legend
-    select(".legend-countries")
-      .style("display", "none");
     select(".legend-cities")
       .style("display", "block");
     
   };
 
   drawLegend(maxLaureatesPerCity);
-  
-  // Listen to radio buttons selection 
-  selectAll("input#countries, input#cities")
-    .on("click", e => {
-      if (e.target.id === "countries") {
-        displayCountries();
-      } else if (e.target.id === "cities") {
-        displayCities();
-      }
-    });
 
-  // On project load, display countries
-  displayCountries();
+  // On project load, display cities
+  displayCities();
 
 };

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Romeo and Juliet | D3.js in Action</title>
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/visualization.css">
+</head>
+<body>
+	<div class="container">
+
+		<section>
+			<div class="row">
+				<div class="col col-9 offset-3">
+					<div class="row">
+						<div class="col col-9">
+							<div id="matrix"></div>
+						</div>
+						<div class="col col-3">
+							<div class="matrix-sidebar">
+								<h3>Number of shared scenes</h3>
+								<div class="matrix-legend"></div>
+								<h3 class="highlight-details">Rows and columns of the characters who have a shared scene with the second musician is red.</h3>
+								<div class="matrix-tooltip hidden">
+									<span class="matrix-tooltip-charA"></span>
+									and
+									<span class="matrix-tooltip-charB"></span>
+									appear together in
+									<span class="matrix-tooltip-scenes"></span>
+									scenes
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	<script type="module" src="./js/main.js"></script>
+	<script type="module" src="./js/save-png.js"></script>
+</body>
+</html>
