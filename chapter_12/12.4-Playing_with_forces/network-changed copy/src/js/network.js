@@ -20,7 +20,6 @@ export const drawNetwork = (nodes, edges) => {
 
   const getColor = (edge) => {
     if (edge.source == "romeo" || edge.target == "romeo") return "#1b35e0";
-    if (edge.source == "juliet" || edge.target == "juliet") return "#5ec722";
     return "#364652";
   }
 
@@ -31,7 +30,7 @@ export const drawNetwork = (nodes, edges) => {
     .join("line")
       .attr("class", "network-link")
       .attr("stroke", getColor)
-      .attr("stroke-opacity", d => d.weight * 0.15)
+      .attr("stroke-opacity", d => (d.weight > 1) ? d.weight * 0.2 : 0)
       .attr("stroke-width", 3);
 
 
@@ -50,8 +49,19 @@ export const drawNetwork = (nodes, edges) => {
       .attr("fill-opacity", d => d.totalLinesNumber / maxLines)
       .attr("stroke", "#FAFBFF")
       .attr("stroke-opacity", d => d.totalLinesNumber / maxLines)
-      .attr("stroke-width", 1);
+      .attr("stroke-width", 1)
+      .attr("repr", d => d.id);
+  
+  const findRomeo = () => {
+    const romeo = svg.select("[repr=romeo]");
+    return [romeo.attr("cx"), romeo.attr("cy")];
+  }
 
+  svg.append("text")
+    .attr("class", "romeo-name")
+    .attr("font-size", "2em")
+    .attr("fill", "#0c3304")
+    .text("Romeo");
   
   // Function called after each tick to set the nodes' position
   const updateNetwork = () => {
@@ -64,6 +74,11 @@ export const drawNetwork = (nodes, edges) => {
     selectAll(".network-node")
       .attr("cx", d => d.x)
       .attr("cy", d => d.y);
+
+    const romeoCoords = findRomeo();
+    svg.select(".romeo-name")
+      .attr("x", romeoCoords[0])
+      .attr("y", romeoCoords[1]);
   };
 
 
